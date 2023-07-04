@@ -584,51 +584,51 @@ const getNitro = (flags) => {
 const getBadges = (flags) => {
     const badges = [];
     
-    if (flags >= 4194304) {
+    if (flags == 4194304) {
         badges.push('Active Developer')
         flags -= 4194304
     }
-    if (flags >= 262144) {
+    if (flags == 262144) {
         badges.push('Moderator Programs Alumni')
         flags -= 262144
     }
-    if (flags >= 131072) {
+    if (flags == 131072) {
         badges.push('Early Verified Bot Developer')
         flags -= 131072
     }
-    if (flags >= 16384) {
+    if (flags == 16384) {
         badges.push('Discord Bug Hunter (Golden)')
         flags -= 16384
     }
-    if (flags >= 512) {
+    if (flags == 512) {
         badges.push('Early Supporter')
         flags -= 512
     }
-    if (flags >= 256) {
+    if (flags == 256) {
         badges.push('HypeSquad Balance')
         flags -= 256
     }
-    if (flags >= 128) {
+    if (flags == 128) {
         badges.push('HypeSquad Brilliance')
         flags -= 128
     }
-    if (flags >= 64) {
+    if (flags == 64) {
         badges.push('HypeSquad Bravery')
         flags -= 64
     }
-    if (flags >= 8) {
+    if (flags == 8) {
         badges.push('Discord Bug Hunter (Normal)')
         flags -= 8
     }
-    if (flags >= 4) {
+    if (flags == 4) {
         badges.push('HypeSquad Event')
         flags -= 4
     }
-    if (flags >= 2) {
+    if (flags == 2) {
         badges.push('Partnered Server Owner')
         flags -= 2
     }
-    if (flags >= 1) {
+    if (flags == 1) {
         badges.push('Discord Staff')
         flags -= 1
     }
